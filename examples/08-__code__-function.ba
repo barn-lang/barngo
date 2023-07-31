@@ -1,0 +1,5 @@
+@import "std.ba"
+
+fun main() {
+	__code__("printf(\"siema\");")
+}

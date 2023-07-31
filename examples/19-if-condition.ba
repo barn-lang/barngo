@@ -1,0 +1,12 @@
+@import "std.ba"
+
+fun main() {
+    let age: int = 13
+    if age == 13 {
+        println("Age is 13\n")
+    } elif age == 14 {
+        println("Age is 14\n")    
+    } else {
+        println("Age isn't 13\n")
+    }
+}

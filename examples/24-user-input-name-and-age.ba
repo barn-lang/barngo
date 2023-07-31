@@ -1,0 +1,8 @@
+@import "std.ba"
+
+fun main() {
+	println("What's your name: ")
+	let user_name: string = input()
+	println("Welcome ")
+	println(user_name)
+}

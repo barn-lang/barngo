@@ -1,0 +1,88 @@
+/*
+ *  This file is part of Barn standard library which is globally
+ *  available in barn-lang github repository
+*/
+
+/*
+ *   Copyright (C) 2022-2023 Barn-Lang Organization
+ * 
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ * 
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ * 
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+fun os_current_system() -> string {
+	__code__("#if defined (__APPLE__)") // Apple
+		return "Apple"
+	__code__("#elif defined (__unix__)") // Unix
+		__code__("struct utsname __buf = { 0 };")
+		__code__("uname(&__buf);")
+		__code__("return strdup(__buf.sysname);")
+	__code__("#elif defined (_WIN32)") // Windows
+		return "Windows"
+	__code__("#endif")
+}
+
+fun os_file_exists(string filename) -> bool {
+	__code__("#if defined (__APPLE__)")
+		__code__("printf(\"os_file_exists(string filename) is not implemented for ios\")")
+		__code__("return false;")
+	__code__("#elif defined (__unix__)")
+		__code__("struct stat __buf;")
+		__code__("return (bool)(stat (filename, &__buf) == 0);")
+	__code__("#elif defined (_WIN32)")
+		__code__("return (bool)(GetFileAttributesA(filename) == 0xFFFFFFFF);")
+	__code__("#else")
+		__code__("printf(\"os_file_exists(string filename) is not implemented for your system\")")
+		__code__("return false;")
+	__code__("#endif")
+
+	// Give it __use__ so there wouldn't be any warnings from os.ba
+	__use__(filename)
+}
+
+fun os_read_file(string filename) -> string {
+	__code__("FILE* f = fopen(filename, \"r\");")
+	__code__("if (f == NULL)")
+	__code__("	return strdup(\"\");")
+    __code__("long size;")
+    __code__("int flen = 0;")
+    __code__("char* buf = \"\";")
+    __code__("fseek(f, 0, SEEK_END);")
+    __code__("flen = ftell(f) + 1;")
+    __code__("buf = malloc(flen * sizeof(char));")
+    __code__("fseek(f, 0, SEEK_SET);")
+    __code__("size = fread(buf, 1, flen, f);")
+	__code__("if (size != flen - 1) {")
+	__code__("	fclose(f);")
+    __code__("    return buf;")
+	__code__("}")
+	__code__("fclose(f);")
+    __code__("return buf;")
+
+	// Give it __use__ so there wouldn't be any warnings from os.ba
+	__use__(filename)
+}
+
+fun os_write_file(string filename, string value) -> bool {
+	__code__("FILE* f = fopen(filename, \"w\");")
+	__code__("if (f == NULL)")
+	__code__("	return false;")
+	__code__("int success = fprintf(f, \"%s\", value);")
+	__code__("if (success != 0)")
+	__code__("	return false;")
+	return true
+
+	// Give it __use__ so there wouldn't be any warnings from os.ba
+	__use__(filename)
+	__use__(value)
+}

@@ -1,0 +1,5 @@
+@import "std.ba"
+
+fun foo() {
+    println("Hello, world but without main lol")
+}

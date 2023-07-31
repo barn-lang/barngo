@@ -1,0 +1,18 @@
+// While running file test.sh this file can not compile
+// successfully because -lglut and -lGL is not passed
+// as --cflags
+
+@import "opengl-barn/gl.ba"
+
+fun display_func() {
+    clear_default_gl()
+    clear_color(255.0, 255.0, 0.0, 255.0)
+    swap_buffers_gl()
+}
+
+fun main() -> int {
+    init_gl("OpenGL Barn Biding", 1024, 512)
+    __code__("glutDisplayFunc(display_func);")
+    main_loop_gl()
+    return 0
+}

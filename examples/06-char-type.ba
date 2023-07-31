@@ -1,0 +1,9 @@
+@import "std.ba"
+
+fun _char(char __c) {
+    println("Yeah getting a char\n")
+}
+
+fun main() {
+    _char('D')
+}

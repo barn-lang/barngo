@@ -1,0 +1,13 @@
+@import "std.ba"
+@import "os.ba"
+
+fun main() {
+    let file: bool = os_file_exists("./file.txt")
+    printbool(file)
+    println("")
+
+    let file_content: string = os_read_file("./file.txt")
+    println(file_content)
+    
+    os_write_file("./file.txt", "Hi")
+}
